@@ -1,10 +1,12 @@
 var _ = require('underscore');
 var fs = require('fs');
 
+var hamlHelperPath = __dirname + '/haml_helper.rb'
+
 module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-
+        //server
         connect: { 
             server: {
                 options: {
@@ -46,7 +48,7 @@ module.exports = function(grunt) {
             all: {
                 options: {
                     language: 'ruby',
-                    rubyHamlCommand: 'haml'
+                    rubyHamlCommand: 'haml -r ' + hamlHelperPath
                 },
                 files: (function() {
                     var files = grunt.file.expandMapping(['src/views/**/*.haml'], 'app/', {
@@ -63,6 +65,7 @@ module.exports = function(grunt) {
                 })()
             }
         },
+        // imagemin
         imagemin: {
             dynamic: {
                 options: {
