@@ -1,8 +1,19 @@
 var _ = require('underscore');
+var fs = require('fs');
 
 module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+
+        connect: { 
+            server: {
+                options: {
+                    port: 9999,
+                    base: 'app'
+                }
+                
+            }
+        },
         // watch
         watch: {
             css: {
@@ -12,6 +23,10 @@ module.exports = function(grunt) {
             haml: {
                 files: 'src/views/**/*.haml',
                 tasks: ['haml']
+            },
+            img: {
+                files: 'src/img/**/*.{png,jpg,gif}',
+                task: ['img']
             }
         },
         // less
@@ -29,6 +44,10 @@ module.exports = function(grunt) {
         // haml
         haml: {
             all: {
+                options: {
+                    language: 'ruby',
+                    rubyHamlCommand: 'haml'
+                },
                 files: (function() {
                     var files = grunt.file.expandMapping(['src/views/**/*.haml'], 'app/', {
                         rename: function(base, path) {
@@ -43,17 +62,36 @@ module.exports = function(grunt) {
                     return files;
                 })()
             }
+        },
+        imagemin: {
+            dynamic: {
+                options: {
+                    optimizationLevel: 3
+                },
+                files: [{
+                    expand: true,
+                    cwd: 'src/',
+                    src: ['img/**/*.{png,jpg,gif}'],
+                    dest: 'app/'
+                }]
+            }
         }
     });
 
 
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-contrib-less');
-    grunt.loadNpmTasks('grunt-haml');
+    var gruntModules = fs.readdirSync('./node_modules');
+    gruntModules.forEach(function(path) {
+        if (/grunt/.test(path) && path !== 'grunt') {
+            grunt.loadNpmTasks(path)
+        }
+    });  
 
-    grunt.registerTask('default', ['watch']);
+
+    grunt.registerTask('default', ['server', 'watch']);
+
+    grunt.registerTask('server', ['connect']);
     grunt.registerTask('html', ['haml']);
-
     grunt.registerTask('build', ['haml', 'less']);
+    grunt.registerTask('img', ['imagemin']);
 
 };
