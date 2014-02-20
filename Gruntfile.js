@@ -1,7 +1,4 @@
-var _ = require('underscore');
 var fs = require('fs');
-
-var hamlHelperPath = __dirname + '/haml_helper.rb'
 
 module.exports = function(grunt) {
     grunt.initConfig({
@@ -13,22 +10,29 @@ module.exports = function(grunt) {
                     port: 9999,
                     base: 'app'
                 }
-                
             }
         },
         // watch
         watch: {
-            css: {
+            less: {
                 files: 'src/**/*.less',
                 tasks: ['less']
             },
-            haml: {
-                files: 'src/views/**/*.haml',
-                tasks: ['haml']
+            jade: {
+                files: 'src/**/*.jade',
+                tasks: ['jade']
             },
             img: {
                 files: 'src/img/**/*.{png,jpg,gif}',
                 task: ['img']
+            },
+            js: {
+                files: ['src/js/**/*.js'],
+                tasks: ['copy:js']
+            },
+            css: {
+                files: ['source/css/**/*.css'],
+                tasks: ['copy:css']
             }
         },
         // less
@@ -43,26 +47,20 @@ module.exports = function(grunt) {
                 }
             }
         },
-        // haml
-        haml: {
-            all: {
+        // jade
+        jade: {
+            compile: {
+                files: [{
+                    cwd: 'src',
+                    src: ['**/*.jade', '!partials/**/*.jade'],
+                    dest: 'app',
+                    expand: true,
+                    ext: '.html'
+                    }],
                 options: {
-                    language: 'ruby',
-                    rubyHamlCommand: 'haml -r ' + hamlHelperPath
-                },
-                files: (function() {
-                    var files = grunt.file.expandMapping(['src/views/**/*.haml'], 'app/', {
-                        rename: function(base, path) {
-                            path = path.replace('src\/views\/', '');
-                            return base + path.replace(/\.haml$/, '.html');
-                        }
-                    });
-                    var exclude = /\/Modules\//;
-                    files = _.filter(files, function(path) {
-                        return !exclude.test(path.src[0]);
-                    });
-                    return files;
-                })()
+                    pretty: true,
+                    debug: false
+                }
             }
         },
         // imagemin
@@ -74,8 +72,26 @@ module.exports = function(grunt) {
                 files: [{
                     expand: true,
                     cwd: 'src/',
-                    src: ['img/**/*.{png,jpg,gif}'],
+                    src: ['**/*.{png,jpg,gif}'],
                     dest: 'app/'
+                }]
+            }
+        },
+        copy: {
+            css: {
+                files: [{
+                    cwd: 'src/css',
+                    src: ['**/*.css'],
+                    dest: 'app/css',
+                    expand: true
+                }]
+            },
+            js: {
+                files: [{
+                    cwd: 'src/js',
+                    src: ['**/*.js'],
+                    dest: 'app/js',
+                    expand: true
                 }]
             }
         }
@@ -93,8 +109,8 @@ module.exports = function(grunt) {
     grunt.registerTask('default', ['server', 'watch']);
 
     grunt.registerTask('server', ['connect']);
-    grunt.registerTask('html', ['haml']);
-    grunt.registerTask('build', ['haml', 'less']);
+    grunt.registerTask('html', ['jade']);
+    grunt.registerTask('build', ['jade', 'less']);
     grunt.registerTask('img', ['imagemin']);
 
 };

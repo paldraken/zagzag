@@ -5,9 +5,9 @@
         "grunt": "~0.4.2",
         "grunt-contrib-less": "~0.9.0",
         "grunt-contrib-watch": "~0.5.3",
-        "grunt-haml": "~0.9.0",
-        "underscore": "*",
         "grunt-contrib-connect": "~0.4.0",
-        "grunt-contrib-imagemin": "~0.4.0"
+        "grunt-contrib-imagemin": "~0.4.0",
+        "grunt-contrib-jade": "~0.10.0",
+        "grunt-contrib-copy": "~0.5.0"
     }
 }
