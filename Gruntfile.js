@@ -93,6 +93,27 @@ module.exports = function(grunt) {
                     dest: 'app/js',
                     expand: true
                 }]
+            },
+            vendor: {
+                files: [{
+                    cwd: 'src/lib',
+                    src: ['**/*.{js,css}'],
+                    dest: 'app/lib',
+                    expand: true
+                }]
+            }
+        },
+        bower: {
+            install: {
+                options: {
+                    targetDir: 'src/lib',
+                    layout: 'byType',
+                    install: true,
+                    verbose: true,
+                    cleanTargetDir: false,
+                    cleanBowerDir: false,
+                    bowerOptions: {}
+                }
             }
         }
     });
@@ -103,14 +124,14 @@ module.exports = function(grunt) {
         if (/grunt/.test(path) && path !== 'grunt') {
             grunt.loadNpmTasks(path)
         }
-    });  
+    });
 
 
     grunt.registerTask('default', ['server', 'watch']);
 
+    grunt.registerTask('build', ['jade', 'less', 'copy', 'imagemin']);
+    grunt.registerTask('lib', ['bower']);
     grunt.registerTask('server', ['connect']);
     grunt.registerTask('html', ['jade']);
-    grunt.registerTask('build', ['jade', 'less']);
-    grunt.registerTask('img', ['imagemin']);
 
 };
