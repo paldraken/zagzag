@@ -39,11 +39,11 @@ module.exports = function(grunt) {
         less: {
             production: {
                 options: {
-                    patch: ['app/css'],
-                    cleancss: true
+                    patch: ['public/css'],
+                    cleancss: false
                 },
                 files: {
-                    'app/css/site.css': 'src/less/site.less'
+                    'public/css/site.css': 'src/less/site.less'
                 }
             }
         },
@@ -53,7 +53,7 @@ module.exports = function(grunt) {
                 files: [{
                     cwd: 'src',
                     src: ['**/*.jade', '!partials/**/*.jade'],
-                    dest: 'app',
+                    dest: 'public',
                     expand: true,
                     ext: '.html'
                     }],
@@ -73,7 +73,7 @@ module.exports = function(grunt) {
                     expand: true,
                     cwd: 'src/',
                     src: ['**/*.{png,jpg,gif}'],
-                    dest: 'app/'
+                    dest: 'public/'
                 }]
             }
         },
@@ -82,7 +82,7 @@ module.exports = function(grunt) {
                 files: [{
                     cwd: 'src/css',
                     src: ['**/*.css'],
-                    dest: 'app/css',
+                    dest: 'public/css',
                     expand: true
                 }]
             },
@@ -90,7 +90,7 @@ module.exports = function(grunt) {
                 files: [{
                     cwd: 'src/js',
                     src: ['**/*.js'],
-                    dest: 'app/js',
+                    dest: 'public/js',
                     expand: true
                 }]
             },
@@ -98,7 +98,7 @@ module.exports = function(grunt) {
                 files: [{
                     cwd: 'src/lib',
                     src: ['**/*.{js,css}'],
-                    dest: 'app/lib',
+                    dest: 'public/lib',
                     expand: true
                 }]
             }
@@ -111,8 +111,25 @@ module.exports = function(grunt) {
                     install: true,
                     verbose: true,
                     cleanTargetDir: false,
-                    cleanBowerDir: false,
+                    cleanBowerDir: true,
                     bowerOptions: {}
+                }
+            }
+        },
+        requirejs: {
+            mainJS: {
+                options: {
+                    baseUrl: "public/js/",
+                    paths: {
+                        "app": "app/config/Init"
+                    },
+                    wrap: true,
+                    name: "libs/almond",
+                    preserveLicenseComments: false,
+                    optimize: "uglify",
+                    mainConfigFile: "public/js/app/config/Init.js",
+                    include: ["app"],
+                    out: "public/js/app/config/Init.min.js"
                 }
             }
         }

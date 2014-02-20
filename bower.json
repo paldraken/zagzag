@@ -2,6 +2,9 @@
     "name": "my-app",
     "version": "0.0.1",
     "dependencies": {
-        "jquery": "*"
+        "jquery": "*",
+        "marionette": "*",
+        "requirejs": "*",
+        "requirejs-text": "*"
     }
 }
