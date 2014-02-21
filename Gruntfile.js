@@ -121,18 +121,30 @@ module.exports = function(grunt) {
                 options: {
                     baseUrl: "public/js/",
                     paths: {
-                        "app": "app/config/Init"
+                        "app": "app/app"
                     },
                     wrap: true,
-                    name: "libs/almond",
+                    name: "../lib/almond/almond",
                     preserveLicenseComments: false,
                     optimize: "uglify",
-                    mainConfigFile: "public/js/app/config/Init.js",
+                    mainConfigFile: "public/js/config.js",
                     include: ["app"],
-                    out: "public/js/app/config/Init.min.js"
+                    out: "public/js/app/init.min.js"
                 }
             }
-        }
+        },
+        jshint: {
+            files: ['Gruntfile.js', 'public/js/app/**/*.js', '!public/js/app/**/*min.js'],
+            options: {
+                globals: {
+                    jQuery: true,
+                    console: false,
+                    module: true,
+                    document: true
+                }
+            }
+        },
+        clean: ["public", "!public/.gitignore"]
     });
 
 
@@ -146,7 +158,10 @@ module.exports = function(grunt) {
 
     grunt.registerTask('default', ['server', 'watch']);
 
-    grunt.registerTask('build', ['jade', 'less', 'copy', 'imagemin']);
+    grunt.registerTask('build', ['clean','jade', 'less', 'copy', 'imagemin', 'requirejs:mainJS']);
+
+    grunt.registerTask('hint', ['jshint']);
+
     grunt.registerTask('lib', ['bower']);
     grunt.registerTask('server', ['connect']);
     grunt.registerTask('html', ['jade']);

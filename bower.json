@@ -5,6 +5,7 @@
         "jquery": "*",
         "marionette": "*",
         "requirejs": "*",
-        "requirejs-text": "*"
+        "requirejs-text": "*",
+        "almond": "~0.2.9"
     }
 }
