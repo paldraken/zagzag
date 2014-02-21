@@ -31,8 +31,12 @@ module.exports = function(grunt) {
                 tasks: ['copy:js']
             },
             css: {
-                files: ['source/css/**/*.css'],
+                files: ['src/css/**/*.css'],
                 tasks: ['copy:css']
+            },
+            html: {
+                files: ['src/**/*.html'],
+                tasks: ['copy:html']
             }
         },
         // less
@@ -99,6 +103,14 @@ module.exports = function(grunt) {
                     cwd: 'src/lib',
                     src: ['**/*.{js,css}'],
                     dest: 'public/lib',
+                    expand: true
+                }]
+            },
+            html: {
+                files: [{
+                    cwd: 'src/',
+                    src: ['**/*.html'],
+                    dest: 'public/',
                     expand: true
                 }]
             }
