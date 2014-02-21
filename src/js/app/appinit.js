@@ -15,6 +15,6 @@ define([
                 Backbone.history.start();
             }
         });
-    }
+    };
 
 });

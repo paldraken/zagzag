@@ -163,7 +163,7 @@ module.exports = function(grunt) {
     var gruntModules = fs.readdirSync('./node_modules');
     gruntModules.forEach(function(path) {
         if (/grunt/.test(path) && path !== 'grunt') {
-            grunt.loadNpmTasks(path)
+            grunt.loadNpmTasks(path);
         }
     });
 
@@ -172,7 +172,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask('build', ['clean','jade', 'less', 'copy', 'imagemin', 'requirejs:mainJS']);
 
-    grunt.registerTask('hint', ['jshint']);
+    grunt.registerTask('hint', ['clean','jade', 'less', 'copy', 'imagemin', 'jshint']);
 
     grunt.registerTask('lib', ['bower']);
     grunt.registerTask('server', ['connect']);
