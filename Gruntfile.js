@@ -8,7 +8,7 @@ module.exports = function(grunt) {
             server: {
                 options: {
                     port: 9999,
-                    base: 'app'
+                    base: 'public'
                 }
             }
         },
@@ -44,7 +44,10 @@ module.exports = function(grunt) {
             production: {
                 options: {
                     patch: ['public/css'],
-                    cleancss: false
+                    cleancss: false,
+                    sourceMap: true,
+                    sourceMapFilename: 'public/css/site.css.map',
+                    sourceMapURL: 'http://127.0.0.1:9999/css/site.css.map'
                 },
                 files: {
                     'public/css/site.css': 'src/less/site.less'
